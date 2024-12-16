@@ -1,4 +1,17 @@
-# habersitesiDjango
+Sistem gereksinimleri:
+- Python 3.12+
+
+Kurulum ve Çalıştırma:
+ ```shell
+> python3 -m venv venv
+> source venv/bin/activate
+(venv)> pip3 install -r path/to/req.txt
+(venv)> cd habersitesi
+(venv)> python3 manage.py makemigrations
+(venv)> python3 manage.py migrate
+(venv)> python3 manage.py runserver
+```
+> Windows kullanıyorsanız python3 ve pip3 yerine python ve pip kullanmanız yeterli.
 
 # GET ```api/haberler/```
 - Paging vardır, yani ```api/haberler/?page=2``` ile 2. sayfaya geçiş yapabilirsiniz. Her sayfa 10 adet haber içerir. Bu haber dataları **detaylı** değildir.
