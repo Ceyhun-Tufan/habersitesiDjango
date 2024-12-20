@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m%g1lqv6$-j^iu%zv*+ikye+h#z0rj)d99i#+f0*g3u3ok=8#%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -129,3 +129,14 @@ REST_FRAMEWORK = {
     'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE':10
 }
+
+
+import os
+
+# Statik dosyalar
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Medya dosyaları
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
