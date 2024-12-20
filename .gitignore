@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+habersitesi/media/news_images/*
+
 # C extensions
 *.so
 
