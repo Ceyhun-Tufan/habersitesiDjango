@@ -27,7 +27,7 @@ class NewsSerializer(serializers.ModelSerializer):
 
 class NewsAddSerializer(serializers.ModelSerializer):
     category = CategorySerializer(required=False)
-    content = serializers.CharField(required=False)
+    content = serializers.CharField(required=True)
     slug = serializers.SlugField(required=False)
     
     class Meta:
