@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
-
+import time
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -9,6 +9,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name) 
+
+        super().save(*args, **kwargs)
 
 class News(models.Model):
     title = models.CharField(max_length=200)
@@ -16,7 +22,6 @@ class News(models.Model):
     slug = models.SlugField(unique=True)
     content = models.TextField()
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='news')
-    published_date = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='news')
@@ -31,7 +36,8 @@ class News(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.title + f"-{int(time.time())}") 
+
         super().save(*args, **kwargs)
 
 class Tag(models.Model):
