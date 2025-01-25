@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Category, News, Tag
 from .tasks import categoryAi
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -28,12 +29,11 @@ class NewsSerializer(serializers.ModelSerializer):
 class NewsAddSerializer(serializers.ModelSerializer):
     category = CategorySerializer(required=False)
     content = serializers.CharField(required=True)
-    slug = serializers.SlugField(required=False)
     
     class Meta:
         model = News
         fields = [
-            'title', 'subtitle', 'content', 'author','slug',
+            'title', 'subtitle', 'content', 'author',
             'category', 'tags', 'image', 'is_featured', 'source'
         ]
 

@@ -1,3 +1,6 @@
+**Yapay zeka entegrasyonlu haber sitesi backend projesi**
+
+
 Sistem gereksinimleri:
 - Python 3.12+
 
@@ -10,13 +13,29 @@ Kurulum ve Çalıştırma:
 (venv)> python3 manage.py makemigrations
 (venv)> python3 manage.py migrate
 (venv)> python3 manage.py runserver
+(venv)> celery -A habersitesi worker --loglevel=info 
 ```
 > Windows kullanıyorsanız python3 ve pip3 yerine python ve pip kullanmanız yeterli.
 
-# GET ```api/haberler/```
-- Paging vardır, yani ```api/haberler/?page=2``` ile 2. sayfaya geçiş yapabilirsiniz. Her sayfa 10 adet haber içerir. Bu haber dataları **detaylı** değildir.
+
+# POST ```api/haber-ekle```
 
 ```json
+{
+    "title": "yeni bir haber",
+    "subtitle": "django",
+    "author": 1,
+    "content": "guzel haberler",
+    "tags": [], // Burada ufak bir hata var, düzelene kadar boş kullanın
+    "image": null,
+    "is_featured": false
+}
+```
+# GET ```api/haberler/```
+- Paging vardır, yani ```api/haberler/?page=2``` ile 2. sayfaya geçiş yapabilirsiniz. Her sayfa 10 adet haber içerir. Bu haber dataları **detaylı değildir**.
+
+```json
+
 {
     "count": 1,
     "next": null,
@@ -24,23 +43,17 @@ Kurulum ve Çalıştırma:
     "results": [
         {
             "id": 1,
-            "title": "Deneme",
-            "subtitle": "Mukemmel",
-            "slug": "denemeslug",
+            "title": "izninizle python sertifikamı çıkarabilir miyim",
+            "subtitle": "django",
+            "slug": "neset-ertasla-hasbihal-1736710023",
             "author": "jeihun",
-            "published_date": "2024-12-15T12:30:33Z",
             "category": {
                 "id": 1,
-                "name": "Sohbet",
-                "slug": "sohbet"
+                "name": "guncel",
+                "slug": "guncel"
             },
-            "tags": [
-                {
-                    "id": 1,
-                    "name": "muhabbet",
-                    "slug": "muhabbet"
-                }
-            ],
+            "created_at": "2025-01-12T19:27:03.335360Z",
+            "tags": [],
             "image": null,
             "view_count": 0,
             "is_featured": false
@@ -55,30 +68,23 @@ Kurulum ve Çalıştırma:
 ```json
 {
     "id": 1,
-    "title": "Deneme",
-    "subtitle": "Mukemmel",
-    "slug": "qwe",
-    "content": "Uzun bir content",
+    "title": "IETT aracında eşya",
+    "subtitle": "iett aracında unutulan eşya",
+    "slug": "neset-ertasla-hasbihal-1736710023",
+    "content": "Istanbul'da İETT'ye bağlı toplu ulaşım araçlarında unutulan eşyalar, açık artırmayla satıldı. Aralarında ütü, drone, cep telefonu, pos makinesi gibi ürünlerin yer aldığı 3 bin 921 parça eşya, 705 bin liraya alıcı buldu.",
     "author": "jeihun",
-    "published_date": "2024-12-15T12:30:33Z",
-    "created_at": "2024-12-15T12:31:01.743113Z",
-    "updated_at": "2024-12-15T12:31:01.743136Z",
-    "category": {
+    "created_at": "2025-01-12T19:27:03.335360Z",
+    "updated_at": "2025-01-12T19:27:03.681383Z",
+    "category": { // yapay zeka ile oluşturuldu
         "id": 1,
-        "name": "Sohbet",
-        "slug": "sohbet"
+        "name": "guncel",
+        "slug": "guncel"
     },
-    "tags": [
-        {
-            "id": 1,
-            "name": "muhabbet",
-            "slug": "muhabbet"
-        }
-    ],
+    "tags": [],
     "image": null,
     "view_count": 0,
     "is_featured": false,
-    "source": null
+    "source": "https://www.ntv.com.tr/galeri/turkiye/iett-araclarinda-unutulan-esyalar-acik-artirmayla-satildi-3-bin-921-esya-705-bin-liraya-alici-buldu,QQhwbgx4ekiPQKd747UE1w"
 }
 ```
 

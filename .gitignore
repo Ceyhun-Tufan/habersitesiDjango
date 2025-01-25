@@ -11,6 +11,10 @@ habersitesi/media/news_images/*
 
 # Distribution / packaging
 .Python
+
+media/
+
+migrations/
 build/
 develop-eggs/
 dist/
