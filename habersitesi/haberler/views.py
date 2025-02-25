@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from .models import News,Category,Tag
+from .models import News,Category
 from .serializers import NewsSerializer,CategorySerializer,NewsUndetailedSerializer,NewsAddSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -10,6 +10,17 @@ from rest_framework.status import HTTP_200_OK,HTTP_400_BAD_REQUEST
 
 # Daha sonrasinda gelecek olan api keyler ile tum endpointler
 # korunacak.
+
+
+# DEBUGGING
+
+class NewsView(APIView):
+
+    def get(self, request):
+        query = News.objects.all()
+        serializer = NewsSerializer(query, many=True) 
+        return Response(serializer.data,status=HTTP_200_OK)
+
 
 
 #PRODUCTION

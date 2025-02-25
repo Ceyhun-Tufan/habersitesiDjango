@@ -1,20 +1,16 @@
 from rest_framework import serializers
-from .models import Category, News, Tag
-from .tasks import categoryAi
+from .models import Category, News
+from .tasks import categoryAi,summeryAi
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name', 'slug']  # İhtiyacınıza göre alanları seçebilirsiniz.
 
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['id', 'name', 'slug']
+
 
 class NewsSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)  # İlişkili model için
-    tags = TagSerializer(many=True, read_only=True)  # Many-to-Many için
     author = serializers.StringRelatedField(read_only=True)  # Yazarın adı gösterilecek.
 
     class Meta:
@@ -22,7 +18,7 @@ class NewsSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'subtitle', 'slug', 'content', 'author',
             'created_at', 'updated_at', 'category',
-            'tags', 'image', 'view_count', 'is_featured', 'source'
+              'image', 'view_count', 'is_featured', 'source'
         ]
 
 
@@ -33,17 +29,18 @@ class NewsAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = [
-            'title', 'subtitle', 'content', 'author',
-            'category', 'tags', 'image', 'is_featured', 'source'
+            'title', 'content', 'author',
+            'category', 'image', 'is_featured', 'source'
         ]
 
     def create(self, validated_data):
 
         content = validated_data.get('content')
         validated_data["category"] = None
+        validated_data["subtitle"] = None
 
         instance = super().create(validated_data)
-
+        summeryAi.delay(content,instance.id)
         categoryAi.delay(content,instance.id)
 
         return instance
@@ -54,7 +51,6 @@ class NewsAddSerializer(serializers.ModelSerializer):
 
 class NewsUndetailedSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)  # İlişkili model için
-    tags = TagSerializer(required=False,many=True, read_only=True)  # Many-to-Many için
     author = serializers.StringRelatedField(read_only=True)  # Yazarın adı gösterilecek.
 
     class Meta:
@@ -62,5 +58,5 @@ class NewsUndetailedSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'subtitle', 'slug', 'author',
             'category','created_at',
-            'tags', 'image', 'view_count', 'is_featured'
+             'image', 'view_count', 'is_featured'
         ]

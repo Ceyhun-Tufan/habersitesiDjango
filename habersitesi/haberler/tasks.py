@@ -5,16 +5,8 @@ from django.utils.text import slugify
 
 @shared_task
 def categoryAi(content:str,news_id:int): 
-    """
-
-    Buraya daha sonra mail gonderme sistemi gelebilir
-    
-    """
-
-
     try:
 
-        print("Yapay zekaya Category icin istek gonderiliyor")
 
         new = News.objects.get(id=news_id)
         content = content.lower().strip()
@@ -34,11 +26,27 @@ def categoryAi(content:str,news_id:int):
     # eger api cevap vermezse
     except requests.RequestException as e:
 
-        print(f"Bir request hatasi oldu {e}")
-
         news = News.objects.get(id=news_id)
         news.category = None
         news.save()
 
+@shared_task
+def summeryAi(content:str,news_id:int):
+    print("---- DENIYORUM ----")
+    try:
 
+        new = News.objects.get(id=news_id)
+        content = content.lower().strip()
 
+        res = requests.post('http://213.142.151.177:3002/news/summary',json={'text':content})
+        res = res.json()
+        summary = res.get('summary',None)
+        new.subtitle = summary
+        new.save()
+
+    except requests.RequestException as e:
+        print(f"----{e} ----")
+        
+        news = News.objects.get(id=news_id)
+        news.subtitle = ""
+        news.save()

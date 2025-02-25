@@ -25,7 +25,6 @@ class News(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='news')
-    tags = models.ManyToManyField('Tag', blank=True)
     image = models.ImageField(upload_to='news_images/', blank=True, null=True)
     view_count = models.PositiveIntegerField(default=0)
     is_featured = models.BooleanField(default=False)
@@ -37,18 +36,5 @@ class News(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title + f"-{int(time.time())}") 
-
-        super().save(*args, **kwargs)
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
-    slug = models.SlugField(unique=True)
-
-    def __str__(self):
-        return self.name
-    
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name) 
 
         super().save(*args, **kwargs)
