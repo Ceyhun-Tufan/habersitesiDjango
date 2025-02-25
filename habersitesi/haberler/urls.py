@@ -3,10 +3,10 @@ from django.conf.urls.static import static
 from django.urls import path
 from django.urls import re_path
 from django.views.static import serve
-from .views import NewsView,SingleNewDetail,NewsOfCategory,AllCategories,NewsListView,NewsAddView
+from .views import SingleNewDetail,NewsOfCategory,AllCategories,NewsListView,NewsAddView
 
 urlpatterns = [
-    path('haberler-all/', NewsView.as_view()),
+    # path('haberler-all/', NewsView.as_view()),
 
     #PRODUCTION
 

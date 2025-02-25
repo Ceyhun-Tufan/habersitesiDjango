@@ -12,17 +12,6 @@ from rest_framework.status import HTTP_200_OK,HTTP_400_BAD_REQUEST
 # korunacak.
 
 
-# DEBUGGING
-
-class NewsView(APIView):
-
-    def get(self, request):
-        query = News.objects.all()
-        serializer = NewsSerializer(query, many=True) 
-        return Response(serializer.data,status=HTTP_200_OK)
-
-
-
 #PRODUCTION
 
 class SingleNewDetail(APIView):
